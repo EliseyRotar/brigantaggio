@@ -1183,7 +1183,7 @@ const App: React.FC = () => {
       {/* Hidden Audio Source */}
       <audio 
         ref={audioRef} 
-        src="https://upload.wikimedia.org/wikipedia/commons/4/4e/Verdi_-_Nabucco_-_Va,_pensiero.ogg" 
+        src="https://upload.wikimedia.org/wikipedia/commons/1/1e/ICBSA_Verdi_-_Nabucco%2C_Va_pensiero.ogg" 
         loop 
         preload="auto"
       />
