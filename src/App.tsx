@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronLeft, ChevronRight, User, BookOpen, Maximize2, Minimize2, Music, Volume2, VolumeX, Disc, Info } from 'lucide-react';
+import { ChevronLeft, ChevronRight, User, BookOpen, Maximize2, Minimize2, Music, Volume2, VolumeX, Disc, Info, X } from 'lucide-react';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 
@@ -19,13 +19,14 @@ const SlideMap: React.FC<{
   markers: Array<{ lat: number; lng: number; title: string; desc: string }>;
   circles?: Array<{ center: [number, number]; radius: number; color: string }>;
   height?: string;
-}> = ({ center, zoom, markers, circles, height = "h-[220px] lg:h-[320px]" }) => {
+  onExpand?: () => void;
+}> = ({ center, zoom, markers, circles, height = "h-[220px] lg:h-[320px]", onExpand }) => {
   const mapRef = React.useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!mapRef.current) return;
     const map = L.map(mapRef.current).setView(center, zoom);
-    
+
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '© OpenStreetMap'
     }).addTo(map);
@@ -39,23 +40,57 @@ const SlideMap: React.FC<{
       L.circle(c.center, { radius: c.radius, color: c.color, fillOpacity: 0.15 }).addTo(map);
     });
 
-    // Invalidate size cleanly after animations complete
-    const timer = setTimeout(() => {
-      map.invalidateSize();
-    }, 400);
+    const timer = setTimeout(() => { map.invalidateSize(); }, 400);
 
-    return () => {
-      clearTimeout(timer);
-      map.remove();
-    };
+    return () => { clearTimeout(timer); map.remove(); };
   }, [center, zoom, markers, circles]);
 
   return (
-    <div 
-      ref={mapRef} 
-      className={`w-full ${height} rounded-2xl overflow-hidden shadow-lg border border-amber-900/20 z-10`} 
-    />
+    <div className={`relative w-full ${height} rounded-2xl overflow-hidden shadow-lg border border-amber-900/20 z-10`}>
+      <div ref={mapRef} className="w-full h-full" />
+      {onExpand && (
+        <button
+          onClick={onExpand}
+          className="absolute top-2 right-2 z-[600] bg-white/90 hover:bg-white p-1.5 rounded-lg shadow border border-stone-200 text-stone-600 hover:text-amber-900 transition"
+          title="Espandi la mappa"
+        >
+          <Maximize2 size={12} />
+        </button>
+      )}
+    </div>
   );
+};
+
+const LightboxMap: React.FC<{
+  center: [number, number];
+  zoom: number;
+  markers: Array<{ lat: number; lng: number; title: string; desc: string }>;
+  circles?: Array<{ center: [number, number]; radius: number; color: string }>;
+}> = ({ center, zoom, markers, circles }) => {
+  const mapRef = React.useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!mapRef.current) return;
+    const map = L.map(mapRef.current).setView(center, zoom);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© OpenStreetMap'
+    }).addTo(map);
+
+    markers.forEach(m => {
+      const marker = L.marker([m.lat, m.lng]).addTo(map);
+      marker.bindPopup(`<b>${m.title}</b><br><span style="font-size:smaller">${m.desc}</span>`);
+    });
+
+    circles?.forEach(c => {
+      L.circle(c.center, { radius: c.radius, color: c.color, fillOpacity: 0.15 }).addTo(map);
+    });
+
+    const timer = setTimeout(() => { map.invalidateSize(); }, 300);
+    return () => { clearTimeout(timer); map.remove(); };
+  }, []);
+
+  return <div ref={mapRef} className="w-full h-full" />;
 };
 
 interface Slide {
@@ -86,6 +121,11 @@ const App: React.FC = () => {
   const [musicVolume, setMusicVolume] = useState(0.35);
   const [audioMode, setAudioMode] = useState<'verdi' | 'synth'>('verdi');
   const [showMusicInfo, setShowMusicInfo] = useState(false);
+
+  type LightboxData =
+    | { kind: 'image'; src: string; title: string; caption: string; info: string }
+    | { kind: 'map'; title: string; caption: string; info: string; center: [number, number]; zoom: number; markers: Array<{lat: number; lng: number; title: string; desc: string}>; circles?: Array<{center: [number, number]; radius: number; color: string}> };
+  const [lightbox, setLightbox] = useState<LightboxData | null>(null);
   
   const audioRef = React.useRef<HTMLAudioElement | null>(null);
   const audioCtxRef = React.useRef<AudioContext | null>(null);
@@ -330,6 +370,7 @@ const App: React.FC = () => {
                 { lat: 40.63, lng: 15.80, title: 'Basilicata', desc: 'Cuore della ribellione contadina' },
                 { lat: 39.30, lng: 16.25, title: 'Calabria', desc: 'Aspromonte e sbarchi legittimisti' }
               ]}
+              onExpand={() => setLightbox({ kind: 'map', title: 'Il Mezzogiorno continentale', caption: 'Teatro principale del brigantaggio post-unitario', info: `Basilicata, Campania, Calabria, Puglia, Abruzzo e Molise erano province con altissima concentrazione di latifondo e miseria contadina. La morfologia montuosa — Appennino lucano, Matese, Aspromonte — fornì ripari naturali impenetrabili per le bande. Napoli, ex capitale borbonica, rimase un centro di cospirazione legittimista per oltre un decennio dopo il 1861.`, center: [40.5, 15.5], zoom: 6, markers: [{ lat: 40.85, lng: 14.25, title: 'Napoli', desc: 'Ex capitale borbonica' }, { lat: 40.63, lng: 15.80, title: 'Basilicata', desc: 'Cuore della ribellione contadina' }, { lat: 39.30, lng: 16.25, title: 'Calabria', desc: 'Aspromonte e sbarchi legittimisti' }] })}
             />
             <div className="text-xs text-center mt-2 text-stone-500 italic">Mappa del Mezzogiorno continentale</div>
           </div>
@@ -360,7 +401,12 @@ const App: React.FC = () => {
             </div>
           </div>
           <div className="w-full lg:w-72 shrink-0">
-            <img src={`${import.meta.env.BASE_URL}images/regno-due-sicilie.jpg`} alt="Regno delle Due Sicilie" className="w-full h-48 lg:h-64 object-cover rounded-2xl shadow-md border border-amber-900/20" />
+            <div className="relative group cursor-pointer" onClick={() => setLightbox({ kind: 'image', src: `${import.meta.env.BASE_URL}images/regno-due-sicilie.jpg`, title: 'Il Regno delle Due Sicilie', caption: "Carta geografica d'epoca (1816–1861)", info: `Il Regno delle Due Sicilie (1816–1861) era il più esteso degli stati preunitari, con circa 9 milioni di abitanti e Napoli come quarta città d'Europa. Il regime borbonico garantiva bassa pressione fiscale e mediazione della Chiesa locale. La conquista garibaldina del 1860 sgretolò in pochi mesi un equilibrio secolare, seminando le premesse della rivolta contadina.` })}>
+              <img src={`${import.meta.env.BASE_URL}images/regno-due-sicilie.jpg`} alt="Regno delle Due Sicilie" className="w-full h-48 lg:h-64 object-cover rounded-2xl shadow-md border border-amber-900/20 transition group-hover:brightness-90" />
+              <div className="absolute top-2 right-2 bg-white/90 p-1.5 rounded-lg shadow border border-stone-200 text-stone-600 opacity-0 group-hover:opacity-100 transition pointer-events-none">
+                <Maximize2 size={12} />
+              </div>
+            </div>
             <div className="text-xs text-center mt-2 text-stone-500 italic">Mappa d'epoca del Regno delle Due Sicilie</div>
           </div>
         </div>
@@ -444,6 +490,7 @@ const App: React.FC = () => {
               circles={[
                 { center: [40.95, 15.63], radius: 25000, color: '#8B4513' }
               ]}
+              onExpand={() => setLightbox({ kind: 'map', title: 'Le roccaforti montuose', caption: 'Basi operative delle bande brigantesche', info: `Il Monte Vulture (1.326 m, Basilicata) era la roccaforte di Crocco, con la foresta di Monticchio come nascondiglio principale. I Monti del Matese (fino a 2.050 m, al confine tra Campania e Molise) ospitavano le bande di Ninco Nanco e dei Fratelli La Gala. La conoscenza dei sentieri e la fitta vegetazione rendevano questi rifugi quasi inespugnabili per i reparti regolari dell'esercito.`, center: [41.1, 15.1], zoom: 8, markers: [{ lat: 40.95, lng: 15.63, title: 'Il Vulture', desc: 'Rifugio boscoso delle bande lucane' }, { lat: 41.38, lng: 14.42, title: 'Monti del Matese', desc: 'Nascondiglio tra Campania e Molise' }], circles: [{ center: [40.95, 15.63] as [number, number], radius: 25000, color: '#8B4513' }] })}
             />
             <div className="text-xs text-center mt-2 text-stone-500 italic">Le roccaforti montuose delle bande</div>
           </div>
@@ -517,7 +564,12 @@ const App: React.FC = () => {
             </p>
           </div>
           <div className="w-full lg:w-72 shrink-0">
-            <img src={`${import.meta.env.BASE_URL}images/briganti-banda.jpg`} alt="Banda armata" className="w-full h-48 lg:h-60 object-cover rounded-2xl shadow-md border border-amber-900/20" />
+            <div className="relative group cursor-pointer" onClick={() => setLightbox({ kind: 'image', src: `${import.meta.env.BASE_URL}images/briganti-banda.jpg`, title: 'Una banda brigantesca', caption: 'Formazione armata nei boschi del Mezzogiorno', info: `Le bande brigantesche erano formazioni mobili di 20–200 uomini, composte da ex soldati borbonici, contadini senza terra, renitenti alla leva e fuorilegge. Operavano attraverso imboscate fulminee e ritirate nei boschi impenetrabili, sfruttando la conoscenza capillare del territorio. Il governo italiano usò fotografie come questa come prova della 'natura criminale' del fenomeno, oscurando deliberatamente le motivazioni politiche e sociali della rivolta.` })}>
+              <img src={`${import.meta.env.BASE_URL}images/briganti-banda.jpg`} alt="Banda armata" className="w-full h-48 lg:h-60 object-cover rounded-2xl shadow-md border border-amber-900/20 transition group-hover:brightness-90" />
+              <div className="absolute top-2 right-2 bg-white/90 p-1.5 rounded-lg shadow border border-stone-200 text-stone-600 opacity-0 group-hover:opacity-100 transition pointer-events-none">
+                <Maximize2 size={12} />
+              </div>
+            </div>
             <div className="text-xs text-center mt-2 text-stone-500 italic">Formazione brigantesca nei boschi</div>
           </div>
         </div>
@@ -533,7 +585,12 @@ const App: React.FC = () => {
       content: (
         <div className="max-w-5xl mx-auto flex flex-col lg:flex-row gap-6 lg:gap-8 items-start">
           <div className="w-full lg:w-72 shrink-0">
-            <img src={`${import.meta.env.BASE_URL}images/carmine-crocco.jpg`} alt="Carmine Crocco" className="w-full h-56 lg:h-64 object-cover rounded-2xl shadow-md border border-amber-900/20" />
+            <div className="relative group cursor-pointer" onClick={() => setLightbox({ kind: 'image', src: `${import.meta.env.BASE_URL}images/carmine-crocco.jpg`, title: 'Carmine Crocco', caption: 'Rionero in Vulture, 1830 – Portoferraio, 1905', info: `Ex bracciante e soldato borbonico, Carmine Donatello Crocco fu il più potente e carismatico capobanda del brigantaggio: comandò fino a 2.000 uomini nella foresta di Monticchio, sull'Appennino lucano. Tradito nel 1864 dal suo luogotenente Caruso, scampò alla fucilazione grazie a un'amnistia. In carcere dettò le sue celebri Memorie — documento fondamentale per comprendere il brigantaggio dal punto di vista dei vinti.` })}>
+              <img src={`${import.meta.env.BASE_URL}images/carmine-crocco.jpg`} alt="Carmine Crocco" className="w-full h-56 lg:h-64 object-cover rounded-2xl shadow-md border border-amber-900/20 transition group-hover:brightness-90" />
+              <div className="absolute top-2 right-2 bg-white/90 p-1.5 rounded-lg shadow border border-stone-200 text-stone-600 opacity-0 group-hover:opacity-100 transition pointer-events-none">
+                <Maximize2 size={12} />
+              </div>
+            </div>
             <div className="text-xs text-center mt-2 text-stone-500 italic">Carmine Crocco, capobanda della Basilicata</div>
           </div>
           <div className="flex-1 space-y-4">
@@ -596,6 +653,7 @@ const App: React.FC = () => {
                 { lat: 40.85, lng: 15.65, title: 'Avigliano', desc: 'Città natale di Ninco Nanco' },
                 { lat: 40.80, lng: 15.70, title: 'Frusci', desc: 'Luogo della sua uccisione (1864)' }
               ]}
+              onExpand={() => setLightbox({ kind: 'map', title: 'I luoghi di Ninco Nanco', caption: 'Giuseppe Nicola Summa — Avigliano, 1833 – Frusci, 1864', info: `Luogotenente di Crocco, Ninco Nanco operò tra i boschi dell'alta Basilicata. La sua cattura nel luglio 1864 fu seguita dall'esecuzione immediata: le autorità militari temevano che potesse rivelare i nomi dei complici tra i notabili locali, cosa che avrebbe scatenato uno scandalo politico di proporzioni enormi. Il suo corpo fu esposto pubblicamente per scoraggiare altri dalla resistenza.`, center: [40.85, 15.65], zoom: 10, markers: [{ lat: 40.85, lng: 15.65, title: 'Avigliano', desc: 'Città natale di Ninco Nanco' }, { lat: 40.80, lng: 15.70, title: 'Frusci', desc: 'Luogo della sua uccisione (1864)' }] })}
             />
             <div className="text-xs text-center mt-2 text-stone-500 italic">I luoghi di Ninco Nanco</div>
           </div>
@@ -637,6 +695,7 @@ const App: React.FC = () => {
                 { lat: 38.05, lng: 16.05, title: 'Sbarco in Calabria', desc: 'Brancaleone, sett. 1861' },
                 { lat: 42.08, lng: 13.08, title: 'Fucilazione', desc: 'Tagliacozzo, dic. 1861' }
               ]}
+              onExpand={() => setLightbox({ kind: 'map', title: 'La parabola di José Borjes', caption: 'Tarragona 1813 – Tagliacozzo, 8 dicembre 1861', info: `Il generale catalano José Borjes sbarcò a Brancaleone (Calabria) nel settembre 1861 con l'incarico di trasformare le bande in un esercito regolare per Francesco II. Crocco rifiutò di subordinarsi a un comandante straniero e sabotò ogni tentativo di disciplina militare. Abbandonato, Borjes tentò la fuga verso lo Stato Pontificio ma fu catturato dai bersaglieri del maggiore Franchini a Tagliacozzo e fucilato l'8 dicembre 1861. Lasciò un diario di straordinaria lucidità.`, center: [40.5, 14.5], zoom: 6, markers: [{ lat: 38.05, lng: 16.05, title: 'Sbarco in Calabria', desc: 'Brancaleone, sett. 1861' }, { lat: 42.08, lng: 13.08, title: 'Fucilazione', desc: 'Tagliacozzo, dic. 1861' }] })}
             />
             <div className="text-xs text-center mt-2 text-stone-500 italic">La parabola del generale Borjes</div>
           </div>
@@ -678,7 +737,12 @@ const App: React.FC = () => {
             </div>
           </div>
           <div className="w-full lg:w-72 shrink-0">
-            <img src={`${import.meta.env.BASE_URL}images/repressione.jpg`} alt="Esercito italiano" className="w-full h-48 lg:h-60 object-cover rounded-2xl shadow-md border border-amber-900/20" />
+            <div className="relative group cursor-pointer" onClick={() => setLightbox({ kind: 'image', src: `${import.meta.env.BASE_URL}images/repressione.jpg`, title: 'La repressione militare', caption: 'Truppe regolari in operazione nel Mezzogiorno (1861–1865)', info: `Tra il 1861 e il 1865, il governo italiano dislocò circa 100.000 soldati nel Mezzogiorno — quasi la metà dell'intero esercito nazionale. La campagna fu guidata dai generali Enrico Cialdini ed Emilio Pallavicini, che applicarono una strategia di terrore collettivo: rastrellamenti, esecuzioni sommarie, distruzione dei raccolti, deportazioni. La legge Pica del 1863 sospese i diritti civili nelle province 'infette', sottoponendo i civili ai tribunali militari.` })}>
+              <img src={`${import.meta.env.BASE_URL}images/repressione.jpg`} alt="Esercito italiano" className="w-full h-48 lg:h-60 object-cover rounded-2xl shadow-md border border-amber-900/20 transition group-hover:brightness-90" />
+              <div className="absolute top-2 right-2 bg-white/90 p-1.5 rounded-lg shadow border border-stone-200 text-stone-600 opacity-0 group-hover:opacity-100 transition pointer-events-none">
+                <Maximize2 size={12} />
+              </div>
+            </div>
             <div className="text-xs text-center mt-2 text-stone-500 italic">Truppe regolari in marcia nel Sud</div>
           </div>
         </div>
@@ -758,6 +822,7 @@ const App: React.FC = () => {
               circles={[
                 { center: [41.27, 14.66], radius: 5000, color: '#b91c1c' }
               ]}
+              onExpand={() => setLightbox({ kind: 'map', title: 'Pontelandolfo e Casalduni', caption: 'Provincia di Benevento — 14 agosto 1861', info: `Dopo l'uccisione di 41 soldati della colonna di Ottajano, il generale Cialdini ordinò: "Di Pontelandolfo e Casalduni non rimanga pietra su pietra." Le truppe del capitano Melegari bruciarono entrambi i borghi il 14 agosto 1861, uccidendo un numero imprecisato di civili (le stime storiche variano da alcune decine a qualche centinaio). Oltre 3.000 abitanti furono costretti alla fuga. L'episodio fu rimosso per decenni dalla storiografia ufficiale e oggi è riconosciuto come strage di Stato.`, center: [41.27, 14.66], zoom: 11, markers: [{ lat: 41.28, lng: 14.67, title: 'Pontelandolfo', desc: 'Teatro della feroce rappresaglia' }, { lat: 41.26, lng: 14.65, title: 'Casalduni', desc: 'Raso al suolo per ordine militare' }], circles: [{ center: [41.27, 14.66] as [number, number], radius: 5000, color: '#b91c1c' }] })}
             />
             <div className="text-xs text-center mt-2 text-stone-500 italic">I luoghi del massacro del 1861</div>
           </div>
@@ -1047,6 +1112,7 @@ const App: React.FC = () => {
   // Keyboard navigation
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') { setLightbox(null); setShowMusicInfo(false); return; }
       if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); nextSlide(); }
       if (e.key === 'ArrowLeft') { e.preventDefault(); prevSlide(); }
       if (e.key.toLowerCase() === 's') { e.preventDefault(); setShowNotes(!showNotes); }
@@ -1295,6 +1361,72 @@ const App: React.FC = () => {
                 {current.notes}
               </div>
             </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Lightbox Modal */}
+      <AnimatePresence>
+        {lightbox && (
+          <motion.div
+            key="lightbox-overlay"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="fixed inset-0 bg-black/80 z-[200] flex items-center justify-center p-4 lg:p-8"
+            onClick={() => setLightbox(null)}
+          >
+            <motion.div
+              initial={{ scale: 0.95, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.95, opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              className="bg-[#fdf8f0] rounded-2xl max-w-4xl w-full max-h-[90vh] flex flex-col overflow-hidden shadow-2xl"
+              onClick={e => e.stopPropagation()}
+            >
+              {/* Header */}
+              <div className="flex justify-between items-start p-4 lg:p-5 border-b border-amber-900/15 shrink-0">
+                <div>
+                  <h2 className="font-bold text-base lg:text-lg text-stone-900 font-serif">{lightbox.title}</h2>
+                  <p className="text-xs text-stone-500 italic mt-0.5">{lightbox.caption}</p>
+                </div>
+                <button
+                  onClick={() => setLightbox(null)}
+                  className="text-stone-400 hover:text-stone-700 p-1 ml-4 shrink-0"
+                  title="Chiudi (Esc)"
+                >
+                  <X size={18} />
+                </button>
+              </div>
+              {/* Content */}
+              <div className="flex-1 overflow-y-auto min-h-0">
+                {lightbox.kind === 'image' ? (
+                  <>
+                    <div className="bg-stone-900 flex items-center justify-center" style={{ height: '55vh' }}>
+                      <img src={lightbox.src} alt={lightbox.title} className="max-w-full max-h-full object-contain" />
+                    </div>
+                    <div className="p-5 lg:p-6">
+                      <p className="text-sm lg:text-base text-stone-700 leading-relaxed font-sans">{lightbox.info}</p>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <div style={{ height: '50vh' }}>
+                      <LightboxMap
+                        center={lightbox.center}
+                        zoom={lightbox.zoom}
+                        markers={lightbox.markers}
+                        circles={lightbox.circles}
+                      />
+                    </div>
+                    <div className="p-5 lg:p-6">
+                      <p className="text-sm lg:text-base text-stone-700 leading-relaxed font-sans">{lightbox.info}</p>
+                    </div>
+                  </>
+                )}
+              </div>
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
