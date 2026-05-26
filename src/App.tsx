@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronLeft, ChevronRight, User, BookOpen, Maximize2, Minimize2, Music, Volume2, VolumeX, Disc } from 'lucide-react';
+import { ChevronLeft, ChevronRight, User, BookOpen, Maximize2, Minimize2, Music, Volume2, VolumeX, Disc, Info } from 'lucide-react';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 
@@ -85,6 +85,7 @@ const App: React.FC = () => {
   const [musicEnabled, setMusicEnabled] = useState(false);
   const [musicVolume, setMusicVolume] = useState(0.35);
   const [audioMode, setAudioMode] = useState<'verdi' | 'synth'>('verdi');
+  const [showMusicInfo, setShowMusicInfo] = useState(false);
   
   const audioRef = React.useRef<HTMLAudioElement | null>(null);
   const audioCtxRef = React.useRef<AudioContext | null>(null);
@@ -1098,43 +1099,88 @@ const App: React.FC = () => {
           <div className="flex items-center gap-1.5 lg:gap-3">
             
             {/* Music Switcher */}
-            <div className="flex items-center gap-1 bg-white/60 px-2 py-1 rounded-full border border-amber-900/15">
-              <button 
-                onClick={() => setMusicEnabled(!musicEnabled)}
-                className={`flex items-center gap-1 px-2 py-0.5 rounded-full font-sans font-bold text-[10px] lg:text-xs transition ${
-                  musicEnabled ? 'bg-amber-900 text-white shadow-2xs' : 'text-stone-600 hover:text-stone-900'
-                }`}
-                title="Attiva/Disattiva sottofondo musicale"
-              >
-                <Music size={10} />
-                <span>{musicEnabled ? 'MUSICA ON' : 'MUSICA OFF'}</span>
-              </button>
+            <div className="relative">
+              <div className="flex items-center gap-1 bg-white/60 px-2 py-1 rounded-full border border-amber-900/15">
+                <button
+                  onClick={() => setMusicEnabled(!musicEnabled)}
+                  className={`flex items-center gap-1 px-2 py-0.5 rounded-full font-sans font-bold text-[10px] lg:text-xs transition ${
+                    musicEnabled ? 'bg-amber-900 text-white shadow-2xs' : 'text-stone-600 hover:text-stone-900'
+                  }`}
+                  title="Attiva/Disattiva sottofondo musicale"
+                >
+                  <Music size={10} />
+                  <span>{musicEnabled ? 'MUSICA ON' : 'MUSICA OFF'}</span>
+                </button>
 
-              {musicEnabled && (
-                <div className="flex items-center gap-1 pl-1 border-l border-stone-200">
-                  <button
-                    onClick={() => setAudioMode(audioMode === 'verdi' ? 'synth' : 'verdi')}
-                    className="flex items-center gap-0.5 px-1.5 py-0.5 rounded bg-amber-100 text-amber-900 font-sans text-[9px] lg:text-[10px] font-semibold hover:bg-amber-200 transition"
-                    title="Cambia sorgente audio"
-                  >
-                    <Disc size={9} className={audioMode === 'verdi' ? 'animate-spin' : ''} style={{ animationDuration: '4s' }} />
-                    <span className="hidden md:inline">{audioMode === 'verdi' ? "Verdi (Orchestra)" : "Sintesi Atmosfera"}</span>
-                    <span className="md:hidden">{audioMode === 'verdi' ? "Verdi" : "Sint."}</span>
-                  </button>
+                {musicEnabled && (
+                  <div className="flex items-center gap-1 pl-1 border-l border-stone-200">
+                    <button
+                      onClick={() => setAudioMode(audioMode === 'verdi' ? 'synth' : 'verdi')}
+                      className="flex items-center gap-0.5 px-1.5 py-0.5 rounded bg-amber-100 text-amber-900 font-sans text-[9px] lg:text-[10px] font-semibold hover:bg-amber-200 transition"
+                      title="Cambia sorgente audio"
+                    >
+                      <Disc size={9} className={audioMode === 'verdi' ? 'animate-spin' : ''} style={{ animationDuration: '4s' }} />
+                      <span className="hidden md:inline">{audioMode === 'verdi' ? "La forza del destino" : "Sintesi Atmosfera"}</span>
+                      <span className="md:hidden">{audioMode === 'verdi' ? "Verdi" : "Sint."}</span>
+                    </button>
 
-                  <div className="hidden sm:flex items-center gap-0.5 px-1">
-                    {musicVolume === 0 ? <VolumeX size={10} className="text-stone-400" /> : <Volume2 size={10} className="text-amber-900" />}
-                    <input 
-                      type="range" 
-                      min="0" 
-                      max="1" 
-                      step="0.05" 
-                      value={musicVolume}
-                      onChange={(e) => setMusicVolume(parseFloat(e.target.value))}
-                      className="w-12 h-1 bg-stone-200 rounded-lg appearance-none cursor-pointer accent-amber-900"
-                      title="Volume"
-                    />
+                    <div className="hidden sm:flex items-center gap-0.5 px-1">
+                      {musicVolume === 0 ? <VolumeX size={10} className="text-stone-400" /> : <Volume2 size={10} className="text-amber-900" />}
+                      <input
+                        type="range"
+                        min="0"
+                        max="1"
+                        step="0.05"
+                        value={musicVolume}
+                        onChange={(e) => setMusicVolume(parseFloat(e.target.value))}
+                        className="w-12 h-1 bg-stone-200 rounded-lg appearance-none cursor-pointer accent-amber-900"
+                        title="Volume"
+                      />
+                    </div>
                   </div>
+                )}
+
+                <button
+                  onClick={() => setShowMusicInfo(!showMusicInfo)}
+                  className={`ml-0.5 flex items-center justify-center w-5 h-5 rounded-full transition ${
+                    showMusicInfo ? 'bg-amber-900 text-white' : 'text-stone-400 hover:text-amber-900'
+                  }`}
+                  title="Informazioni sul brano"
+                >
+                  <Info size={10} />
+                </button>
+              </div>
+
+              {showMusicInfo && (
+                <div className="absolute top-full right-0 mt-2 w-72 bg-[#fdf8f0] border border-amber-900/25 rounded-2xl shadow-2xl p-4 z-[100] font-sans">
+                  <div className="flex justify-between items-start mb-3">
+                    <div>
+                      <div className="font-bold text-amber-900 text-sm leading-tight">«Pace, pace, mio Dio!»</div>
+                      <div className="text-xs text-stone-500 italic mt-0.5">da <em>La forza del destino</em></div>
+                    </div>
+                    <button onClick={() => setShowMusicInfo(false)} className="text-stone-400 hover:text-stone-700 text-xs ml-2">✕</button>
+                  </div>
+                  <dl className="text-xs space-y-1.5 text-stone-700 mb-3">
+                    <div className="flex gap-2">
+                      <dt className="font-semibold text-stone-500 w-24 shrink-0">Compositore</dt>
+                      <dd>Giuseppe Verdi</dd>
+                    </div>
+                    <div className="flex gap-2">
+                      <dt className="font-semibold text-stone-500 w-24 shrink-0">Anno</dt>
+                      <dd>1862 · Prima: San Pietroburgo</dd>
+                    </div>
+                    <div className="flex gap-2">
+                      <dt className="font-semibold text-stone-500 w-24 shrink-0">Interprete</dt>
+                      <dd>Eugenia Burzio, soprano</dd>
+                    </div>
+                    <div className="flex gap-2">
+                      <dt className="font-semibold text-stone-500 w-24 shrink-0">Licenza</dt>
+                      <dd>CC BY-SA 4.0 · Wikimedia Commons</dd>
+                    </div>
+                  </dl>
+                  <p className="text-xs text-stone-600 leading-relaxed border-t border-amber-900/10 pt-3">
+                    L'aria è cantata da Leonora, esule e distrutta dalla guerra, che supplica Dio di concederle pace e morte dopo anni di sofferenza. Verdi compose quest'opera tra il 1861 e il 1862 — esattamente mentre il brigantaggio insanguinava il Mezzogiorno d'Italia.
+                  </p>
                 </div>
               )}
             </div>
@@ -1183,7 +1229,7 @@ const App: React.FC = () => {
       {/* Hidden Audio Source */}
       <audio 
         ref={audioRef} 
-        src="https://upload.wikimedia.org/wikipedia/commons/1/1e/ICBSA_Verdi_-_Nabucco%2C_Va_pensiero.ogg" 
+        src="https://upload.wikimedia.org/wikipedia/commons/5/50/ICBSA_Verdi_-_Nabucco%2C_Va_pensiero.ogg"
         loop 
         preload="auto"
       />
