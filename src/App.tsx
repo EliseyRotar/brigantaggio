@@ -359,7 +359,7 @@ const App: React.FC = () => {
             </div>
           </div>
           <div className="w-full lg:w-72 shrink-0">
-            <img src="/images/regno-due-sicilie.jpg" alt="Regno delle Due Sicilie" className="w-full h-48 lg:h-64 object-cover rounded-2xl shadow-md border border-amber-900/20" />
+            <img src="images/regno-due-sicilie.jpg" alt="Regno delle Due Sicilie" className="w-full h-48 lg:h-64 object-cover rounded-2xl shadow-md border border-amber-900/20" />
             <div className="text-xs text-center mt-2 text-stone-500 italic">Mappa d'epoca del Regno delle Due Sicilie</div>
           </div>
         </div>
@@ -516,7 +516,7 @@ const App: React.FC = () => {
             </p>
           </div>
           <div className="w-full lg:w-72 shrink-0">
-            <img src="/images/briganti-banda.jpg" alt="Banda armata" className="w-full h-48 lg:h-60 object-cover rounded-2xl shadow-md border border-amber-900/20" />
+            <img src="images/briganti-banda.jpg" alt="Banda armata" className="w-full h-48 lg:h-60 object-cover rounded-2xl shadow-md border border-amber-900/20" />
             <div className="text-xs text-center mt-2 text-stone-500 italic">Formazione brigantesca nei boschi</div>
           </div>
         </div>
@@ -532,7 +532,7 @@ const App: React.FC = () => {
       content: (
         <div className="max-w-5xl mx-auto flex flex-col lg:flex-row gap-6 lg:gap-8 items-start">
           <div className="w-full lg:w-72 shrink-0">
-            <img src="/images/carmine-crocco.jpg" alt="Carmine Crocco" className="w-full h-56 lg:h-64 object-cover rounded-2xl shadow-md border border-amber-900/20" />
+            <img src="images/carmine-crocco.jpg" alt="Carmine Crocco" className="w-full h-56 lg:h-64 object-cover rounded-2xl shadow-md border border-amber-900/20" />
             <div className="text-xs text-center mt-2 text-stone-500 italic">Carmine Crocco, capobanda della Basilicata</div>
           </div>
           <div className="flex-1 space-y-4">
@@ -677,7 +677,7 @@ const App: React.FC = () => {
             </div>
           </div>
           <div className="w-full lg:w-72 shrink-0">
-            <img src="/images/repressione.jpg" alt="Esercito italiano" className="w-full h-48 lg:h-60 object-cover rounded-2xl shadow-md border border-amber-900/20" />
+            <img src="images/repressione.jpg" alt="Esercito italiano" className="w-full h-48 lg:h-60 object-cover rounded-2xl shadow-md border border-amber-900/20" />
             <div className="text-xs text-center mt-2 text-stone-500 italic">Truppe regolari in marcia nel Sud</div>
           </div>
         </div>
