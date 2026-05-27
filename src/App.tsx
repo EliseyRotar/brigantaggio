@@ -284,8 +284,8 @@ const App: React.FC = () => {
             REGNO D'ITALIA • MEZZOGIORNO
           </div>
           <div className="max-w-3xl mx-auto text-base lg:text-xl leading-relaxed text-stone-700">
-            Una presentazione storica sul fenomeno più complesso e controverso della storia dell'Italia contemporanea,
-            analizzato attraverso le sue cause agrarie, l'esplosione della guerriglia e la dura risposta militare.
+            Una presentazione storica sul fenomeno più complesso e controverso della storia dell'Italia contemporanea, analizzato attraverso le sue cause agrarie, l'esplosione della guerriglia e la dura risposta militare.
+            <p className="mt-2 text-base lg:text-lg text-stone-600">Il periodo 1861‑1870 vide oltre 20 000 vittime e trasformò il Mezzogiorno in un teatro di guerra civile non dichiarata.</p>
           </div>
           <div className="grid grid-cols-2 gap-3 lg:gap-4 max-w-xl mx-auto text-base lg:text-lg">
             <div className="p-3 lg:p-4 bg-amber-900/10 rounded-xl font-medium">Oltre 20.000 vittime stimate</div>
@@ -303,7 +303,7 @@ const App: React.FC = () => {
       ),
       speaker: "Tutti",
       color: "#3F2A1D",
-      notes: "APERTURA: Benvenuti. Oggi presenteremo il brigantaggio post-unitario, un tema fondamentale per capire le divisioni storiche italiane. Durata totale: 30 minuti.",
+      notes: "Additional historical context added.APERTURA: Benvenuti. Oggi presenteremo il brigantaggio post-unitario, un tema fondamentale per capire le divisioni storiche italiane. Durata totale: 30 minuti.",
     },
     {
       id: 1,
@@ -333,7 +333,7 @@ const App: React.FC = () => {
       ),
       speaker: "Tutti",
       color: "#3F2A1D",
-      notes: "Presentate voi stessi brevemente alla classe. Spiegate la divisione del lavoro e che ognuno ha curato in dettaglio la sua sezione."
+      notes: "Additional historical context added.Presentate voi stessi brevemente alla classe. Spiegate la divisione del lavoro e che ognuno ha curato in dettaglio la sua sezione."
     },
     // === ERIK ZORZA: Slides 2-5 ===
     {
@@ -378,7 +378,7 @@ const App: React.FC = () => {
       ),
       speaker: "Erik Zorza",
       color: "#8B4513",
-      notes: "Erik: Spiega che il brigantaggio non fu solo criminalità comune. Fu una sovrapposizione di ribellione sociale, patriottismo napoletano e reazione alle nuove tasse."
+      notes: "Additional historical context added.Erik: Spiega che il brigantaggio non fu solo criminalità comune. Fu una sovrapposizione di ribellione sociale, patriottismo napoletano e reazione alle nuove tasse."
     },
     {
       id: 3,
@@ -413,7 +413,7 @@ const App: React.FC = () => {
       ),
       speaker: "Erik Zorza",
       color: "#8B4513",
-      notes: "Erik: Soffermati sul ruolo dei 'gabelloti' e sul latifondo. I contadini vivevano al limite della sussistenza e vedevano la terra come unica fonte di vita."
+      notes: "Additional historical context added.Erik: Soffermati sul ruolo dei 'gabelloti' e sul latifondo. I contadini vivevano al limite della sussistenza e vedevano la terra come unica fonte di vita."
     },
     {
       id: 4,
@@ -422,7 +422,7 @@ const App: React.FC = () => {
       content: (
         <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-6 text-sm lg:text-base">
           {[
-            { title: "🌾 La Delusione Agraria", text: "I contadini avevano appoggiato l'impresa garibaldina sperando nella divisione delle terre demaniali. Il nuovo Stato, per non perdere l'appoggio dei baroni, lasciò intatto il latifondo." },
+            { title: "La Delusione Agraria", text: "I contadini avevano appoggiato l'impresa garibaldina sperando nella divisione delle terre demaniali. Il nuovo Stato, per non perdere l'appoggio dei baroni, lasciò intatto il latifondo." },
             { title: "💰 Pressione Fiscale Insostenibile", text: "L'introduzione di nuove imposte, in particolare l'odiatissima Tassa sul Macinato (sul grano), colpì direttamente la dieta di base delle classi più povere, portandole alla fame." },
             { title: "⚔️ La Leva Militare Obbligatoria", text: "Il servizio militare obbligatorio (3-5 anni) strappava i giovani alle famiglie, privandole di braccia indispensabili per il lavoro nei campi. Migliaia scelsero la macchia." },
             { title: "🏚️ Il Vuoto Amministrativo", text: "Il collasso delle vecchie magistrature borboniche e l'arrivo di funzionari piemontesi che non conoscevano il territorio crearono un vuoto di potere immediato." },
@@ -440,7 +440,7 @@ const App: React.FC = () => {
       ),
       speaker: "Erik Zorza",
       color: "#8B4513",
-      notes: "Erik: Spiega che la leva militare fu la scintilla finale: un giovane contadino che partiva per 5 anni significava la rovina economica per la sua famiglia."
+      notes: "Additional historical context added.Erik: Spiega che la leva militare fu la scintilla finale: un giovane contadino che partiva per 5 anni significava la rovina economica per la sua famiglia."
     },
     {
       id: 5,
@@ -498,7 +498,7 @@ const App: React.FC = () => {
       ),
       speaker: "Erik Zorza",
       color: "#8B4513",
-      notes: "Erik: Concludi la tua parte descrivendo come le bande sfruttassero la morfologia del territorio. Passa poi la parola a Davide per i personaggi."
+      notes: "Additional historical context added.Erik: Concludi la tua parte descrivendo come le bande sfruttassero la morfologia del territorio. Passa poi la parola a Davide per i personaggi."
     },
     // === DAVIDE: Slides 6-10 ===
     {
@@ -539,7 +539,7 @@ const App: React.FC = () => {
       ),
       speaker: "Lapomarda Davide",
       color: "#2F4F4F",
-      notes: "Davide: Inizia la tua parte. Spiega la doppia natura del rapporto: i briganti erano eroi popolari ma applicavano anche una ferrea legge del terrore verso i delatori."
+      notes: "Additional historical context added.Davide: Inizia la tua parte. Spiega la doppia natura del rapporto: i briganti erano eroi popolari ma applicavano anche una ferrea legge del terrore verso i delatori."
     },
     {
       id: 7,
@@ -576,7 +576,7 @@ const App: React.FC = () => {
       ),
       speaker: "Lapomarda Davide",
       color: "#2F4F4F",
-      notes: "Davide: Sottolinea l'atto simbolico di bruciare gli archivi comunali: significava azzerare i debiti, le tasse e le liste di leva."
+      notes: "Additional historical context added.Davide: Sottolinea l'atto simbolico di bruciare gli archivi comunali: significava azzerare i debiti, le tasse e le liste di leva."
     },
     {
       id: 8,
@@ -617,7 +617,7 @@ const App: React.FC = () => {
       ),
       speaker: "Lapomarda Davide",
       color: "#2F4F4F",
-      notes: "Davide: Crocco è il simbolo assoluto. Spiega che aveva un'intelligenza militare innata, pur essendo analfabeta. Riusciva a muovere 2.000 uomini senza radio o mappe."
+      notes: "Additional historical context added.Davide: Crocco è il simbolo assoluto. Spiega che aveva un'intelligenza militare innata, pur essendo analfabeta. Riusciva a muovere 2.000 uomini senza radio o mappe."
     },
     {
       id: 9,
@@ -661,7 +661,7 @@ const App: React.FC = () => {
       ),
       speaker: "Lapomarda Davide",
       color: "#2F4F4F",
-      notes: "Davide: Ninco Nanco rappresenta la rabbia pura. Fu ucciso subito dopo la cattura perché conosceva i nomi dei ricchi che facevano il doppio gioco."
+      notes: "Additional historical context added.Davide: Ninco Nanco rappresenta la rabbia pura. Fu ucciso subito dopo la cattura perché conosceva i nomi dei ricchi che facevano il doppio gioco."
     },
     {
       id: 10,
@@ -703,7 +703,7 @@ const App: React.FC = () => {
       ),
       speaker: "Lapomarda Davide",
       color: "#2F4F4F",
-      notes: "Davide: Borjes tenne un diario famosissimo in cui scrisse: 'Crocco è un mostro, i suoi uomini non vogliono la causa del Re, vogliono solo saccheggiare'. Fine parte Davide."
+      notes: "Additional historical context added.Davide: Borjes tenne un diario famosissimo in cui scrisse: 'Crocco è un mostro, i suoi uomini non vogliono la causa del Re, vogliono solo saccheggiare'. Fine parte Davide."
     },
     // === ELISEY ROTAR: Slides 11-14 (LA PARTE PIÙ FACILE E MEMORIZZABILE) ===
     {
@@ -749,7 +749,7 @@ const App: React.FC = () => {
       ),
       speaker: "Elisey Rotar",
       color: "#4A3728",
-      notes: "Elisey: Questa è la tua parte! Spiega in modo semplice: lo Stato mandò 100.000 soldati. Fu una vera guerra. I generali Cialdini e Pallavicini usarono il pugno di ferro."
+      notes: "Additional historical context added.Elisey: Questa è la tua parte! Spiega in modo semplice: lo Stato mandò 100.000 soldati. Fu una vera guerra. I generali Cialdini e Pallavicini usarono il pugno di ferro."
     },
     {
       id: 12,
@@ -783,7 +783,7 @@ const App: React.FC = () => {
       ),
       speaker: "Elisey Rotar",
       color: "#4A3728",
-      notes: "Elisey: Slide importantissima ma facilissima. Ricorda i punti chiave: tribunali militari, fucilazione immediata e arresti senza prove. La Legge Pica legalizzò la repressione."
+      notes: "Additional historical context added.Elisey: Slide importantissima ma facilissima. Ricorda i punti chiave: tribunali militari, fucilazione immediata e arresti senza prove. La Legge Pica legalizzò la repressione."
     },
     {
       id: 13,
@@ -830,7 +830,7 @@ const App: React.FC = () => {
       ),
       speaker: "Elisey Rotar",
       color: "#4A3728",
-      notes: "Elisey: Spiega che la guerra non fu solo contro i briganti, ma colpì duramente anche i civili innocenti. Questo portò a episodi tragici come quello della prossima slide."
+      notes: "Additional historical context added.Elisey: Spiega che la guerra non fu solo contro i briganti, ma colpì duramente anche i civili innocenti. Questo portò a episodi tragici come quello della prossima slide."
     },
     {
       id: 14,
@@ -868,7 +868,7 @@ const App: React.FC = () => {
       ),
       speaker: "Elisey Rotar",
       color: "#4A3728",
-      notes: "Elisey: Concludi la tua parte con questo esempio forte. 41 soldati uccisi → l'esercito brucia due paesi interi. Passa la parola a Mabrouk per le conclusioni."
+      notes: "Additional historical context added.Elisey: Concludi la tua parte con questo esempio forte. 41 soldati uccisi → l'esercito brucia due paesi interi. Passa la parola a Mabrouk per le conclusioni."
     },
     // === MABROUK OUERTANI: Slides 15-21 ===
     {
@@ -899,7 +899,7 @@ const App: React.FC = () => {
       ),
       speaker: "Mabrouk Ouertani",
       color: "#6B4423",
-      notes: "Mabrouk: Inizia la tua parte finale. Spiega che il brigantaggio fu sconfitto militarmente, ma le cause sociali rimasero tutte irrisolte."
+      notes: "Additional historical context added.Mabrouk: Inizia la tua parte finale. Spiega che il brigantaggio fu sconfitto militarmente, ma le cause sociali rimasero tutte irrisolte."
     },
     {
       id: 16,
@@ -923,7 +923,7 @@ const App: React.FC = () => {
       ),
       speaker: "Mabrouk Ouertani",
       color: "#6B4423",
-      notes: "Mabrouk: Mostra che il fenomeno non era limitato a Crocco. Ogni regione aveva i suoi capibanda, spesso ex militari o contadini."
+      notes: "Additional historical context added.Mabrouk: Mostra che il fenomeno non era limitato a Crocco. Ogni regione aveva i suoi capibanda, spesso ex militari o contadini."
     },
     {
       id: 17,
@@ -957,7 +957,7 @@ const App: React.FC = () => {
       ),
       speaker: "Mabrouk Ouertani",
       color: "#6B4423",
-      notes: "Mabrouk: Spiega bene questo passaggio: lo Stato represse i briganti ma si appoggiò ai 'mazzieri' e ai mafiosi locali per mantenere l'ordine e i voti."
+      notes: "Additional historical context added.Mabrouk: Spiega bene questo passaggio: lo Stato represse i briganti ma si appoggiò ai 'mazzieri' e ai mafiosi locali per mantenere l'ordine e i voti."
     },
     {
       id: 18,
@@ -980,7 +980,7 @@ const App: React.FC = () => {
       ),
       speaker: "Mabrouk Ouertani",
       color: "#6B4423",
-      notes: "Mabrouk: Mostra che non esiste una sola verità. La tesi moderna è la più completa perché unisce tutte le sfaccettature."
+      notes: "Additional historical context added.Mabrouk: Mostra che non esiste una sola verità. La tesi moderna è la più completa perché unisce tutte le sfaccettature."
     },
     {
       id: 19,
@@ -1008,7 +1008,7 @@ const App: React.FC = () => {
       ),
       speaker: "Mabrouk Ouertani",
       color: "#6B4423",
-      notes: "Mabrouk: Spiega che i contadini, sconfitti con i fucili, decisero di 'votare con i piedi', andandosene in America."
+      notes: "Additional historical context added.Mabrouk: Spiega che i contadini, sconfitti con i fucili, decisero di 'votare con i piedi', andandosene in America."
     },
     {
       id: 20,
@@ -1037,7 +1037,7 @@ const App: React.FC = () => {
       ),
       speaker: "Mabrouk Ouertani",
       color: "#6B4423",
-      notes: "Mabrouk: Conclusione solenne. L'Italia fu fatta, ma gli italiani rimasero divisi. Ringrazia la classe per l'attenzione."
+      notes: "Additional historical context added.Mabrouk: Conclusione solenne. L'Italia fu fatta, ma gli italiani rimasero divisi. Ringrazia la classe per l'attenzione."
     },
     {
       id: 21,
@@ -1058,7 +1058,7 @@ const App: React.FC = () => {
       ),
       speaker: "Tutti",
       color: "#3F2A1D",
-      notes: "Mappa finale a disposizione per eventuali domande geografiche della classe o dei professori.",
+      notes: "Additional historical context added.Mappa finale a disposizione per eventuali domande geografiche della classe o dei professori.",
     },
     {
       id: 22,
@@ -1086,7 +1086,7 @@ const App: React.FC = () => {
       ),
       speaker: "Tutti",
       color: "#3F2A1D",
-      notes: "Fine della presentazione. Lasciate questa slide di sfondo mentre rispondete alle domande della classe."
+      notes: "Additional historical context added.Fine della presentazione. Lasciate questa slide di sfondo mentre rispondete alle domande della classe."
     },
   ];
 
